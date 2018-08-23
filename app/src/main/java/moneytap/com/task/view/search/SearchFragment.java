@@ -56,7 +56,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.fragment_task;
+        return R.layout.fragment_search;
     }
 
     @Override

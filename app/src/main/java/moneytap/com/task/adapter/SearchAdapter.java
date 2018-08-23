@@ -30,7 +30,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_task, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_search, null);
         UserViewHolder viewHolder = new UserViewHolder(view);
         return viewHolder;
     }

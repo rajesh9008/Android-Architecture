@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<moneytap.com.searchedList.view.search.ScrollChildSwipeRefreshLayout
+<moneytap.com.task.view.search.ScrollChildSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
@@ -37,4 +37,4 @@
 
         </LinearLayout>
     </RelativeLayout>
-</moneytap.com.searchedList.view.search.ScrollChildSwipeRefreshLayout>
+</moneytap.com.task.view.search.ScrollChildSwipeRefreshLayout>
