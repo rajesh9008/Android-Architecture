@@ -22,7 +22,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void start() {
-
+        //load home page data if needed any
     }
 
     @Override

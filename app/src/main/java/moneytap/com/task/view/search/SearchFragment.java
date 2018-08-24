@@ -21,6 +21,7 @@ import moneytap.com.task.R;
 import moneytap.com.task.model.SearchRequest;
 import moneytap.com.task.model.SearchedList;
 import moneytap.com.task.presenter.BasePresenter;
+import moneytap.com.task.utils.Constants;
 import moneytap.com.task.view.BaseFragment;
 import moneytap.com.task.view.adapter.SearchAdapter;
 import moneytap.com.task.view.searchdetails.SearchDetailActivity;
@@ -112,9 +113,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
             public boolean onQueryTextChange(String newText) {
                 if (newText.length() > 0) {
                     SearchRequest searchRequest = new SearchRequest();
-                    searchRequest.setAction("query");
+                    searchRequest.setAction(Constants.QUERY);
                     searchRequest.setSearchterm(newText);
-                    searchRequest.setRequestType("json");
+                    searchRequest.setRequestType(Constants.JSON);
                     mPresenter.loadTasks(searchRequest);
                 } else {
                     mListView.setVisibility(View.GONE);

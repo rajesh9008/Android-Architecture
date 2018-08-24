@@ -6,4 +6,6 @@ public class Constants {
     public static final String ALERT_TITLE = "Alert";
     public static final String NETWORK_ERROR = "Something went wrong, please check your internet";
     public static final String EXTRA_TASK_ID = "TASK_ID";
+    public static final String QUERY = "query";
+    public static final String JSON = "json";
 }
