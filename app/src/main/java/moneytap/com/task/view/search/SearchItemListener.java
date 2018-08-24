@@ -4,6 +4,6 @@ import moneytap.com.task.model.SearchedList;
 
 public interface SearchItemListener {
 
-        void onTaskClick(SearchedList.QueryBean.PagesBean clickedTask);
+        void onSearchedItemClick(SearchedList.QueryBean.PagesBean clickedPageBean);
 
     }

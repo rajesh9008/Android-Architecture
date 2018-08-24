@@ -16,16 +16,16 @@ public interface SearchContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showTasks(SearchedList tasks);
+        void showSearchedList(SearchedList tasks);
 
         void showSearchedDetailsUi(SearchedList.QueryBean.PagesBean requestedTask);
     }
 
     interface Presenter extends BasePresenter {
 
-        void loadTasks(boolean forceUpdate, SearchRequest SearchRequest);
+        void loadTasks(SearchRequest SearchRequest);
 
-        void openTaskDetails(@NonNull SearchedList.QueryBean.PagesBean requestedTask);
+        void openSearchDetails(@NonNull SearchedList.QueryBean.PagesBean requestedTask);
 
 
     }

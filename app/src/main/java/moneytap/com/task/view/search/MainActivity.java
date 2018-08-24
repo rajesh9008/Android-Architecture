@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import moneytap.com.task.R;
-import moneytap.com.task.net.TasksRepository;
+import moneytap.com.task.net.SearchRepository;
 import moneytap.com.task.utils.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Create the presenter
         mSearchPresenter = new SearchPresenter(
-                TasksRepository.getInstance(), tasksFragment);
+                SearchRepository.getInstance(), tasksFragment);
     }
 }

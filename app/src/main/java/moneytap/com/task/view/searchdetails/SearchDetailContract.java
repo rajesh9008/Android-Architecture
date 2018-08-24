@@ -7,7 +7,7 @@ import moneytap.com.task.view.BaseView;
 /**
  * This specifies the contract between the view and the presenter.
  */
-public interface TaskDetailContract {
+public interface SearchDetailContract {
 
     interface View extends BaseView<Presenter> {
 

@@ -13,17 +13,17 @@ import retrofit2.Response;
 
 import static moneytap.com.task.net.RestClient.getAPIInterface;
 
-public class TasksRepository implements TasksDataSource {
+public class SearchRepository implements SearchDataSource {
 
-    private static TasksRepository INSTANCE = null;
-    Map<String, SearchedList> mCachedTasks = new LinkedHashMap<>();
+    private static SearchRepository INSTANCE = null;
+    Map<String, SearchedList> mCachedSearchedItems = new LinkedHashMap<>();
 
-    private TasksRepository() {
+    private SearchRepository() {
     }
 
-    public static TasksRepository getInstance() {
+    public static SearchRepository getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new TasksRepository();
+            INSTANCE = new SearchRepository();
         }
         return INSTANCE;
     }
@@ -33,11 +33,11 @@ public class TasksRepository implements TasksDataSource {
     }
 
     @Override
-    public void getTasks(@NonNull final LoadTasksCallback callback, final SearchRequest searchRequest) {
+    public void getSearchItems(@NonNull final LoadSearchedCallback callback, final SearchRequest searchRequest) {
         // Respond immediately with cache if available and not dirty
-        if (mCachedTasks != null) {
-            if (mCachedTasks.get(searchRequest.getSearchterm()) != null) {
-                callback.onTasksLoaded(mCachedTasks.get(searchRequest.getSearchterm()));
+        if (mCachedSearchedItems != null) {
+            if (mCachedSearchedItems.get(searchRequest.getSearchterm()) != null) {
+                callback.onTasksLoaded(mCachedSearchedItems.get(searchRequest.getSearchterm()));
                 return;
             }
         }
@@ -45,7 +45,7 @@ public class TasksRepository implements TasksDataSource {
                 searchRequest.getSearchterm()).enqueue(new Callback<SearchedList>() {
             @Override
             public void onResponse(Call<SearchedList> call, Response<SearchedList> response) {
-                mCachedTasks.put(searchRequest.getSearchterm(), (SearchedList) response.body());
+                mCachedSearchedItems.put(searchRequest.getSearchterm(), (SearchedList) response.body());
                 callback.onTasksLoaded((SearchedList) response.body());
             }
 
@@ -58,11 +58,11 @@ public class TasksRepository implements TasksDataSource {
     }
 
 
-    private void refreshCache(SearchedList tasks) {
-        if (mCachedTasks == null) {
-            mCachedTasks = new LinkedHashMap<>();
+    private void refreshCache(SearchedList list) {
+        if (mCachedSearchedItems == null) {
+            mCachedSearchedItems = new LinkedHashMap<>();
         }
-        mCachedTasks.clear();
+        mCachedSearchedItems.clear();
     }
 
 }

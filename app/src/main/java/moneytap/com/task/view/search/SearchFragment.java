@@ -17,24 +17,24 @@ import android.widget.ProgressBar;
 import java.util.ArrayList;
 
 import moneytap.com.task.R;
-import moneytap.com.task.adapter.SearchAdapter;
+import moneytap.com.task.view.adapter.SearchAdapter;
 import moneytap.com.task.model.SearchRequest;
 import moneytap.com.task.model.SearchedList;
 import moneytap.com.task.presenter.BasePresenter;
 import moneytap.com.task.view.BaseFragment;
-import moneytap.com.task.view.searchdetails.TaskDetailActivity;
+import moneytap.com.task.view.searchdetails.SearchDetailActivity;
 
 import static moneytap.com.task.utils.Constants.EXTRA_TASK_ID;
 
 public class SearchFragment extends BaseFragment implements SearchContract.View {
 
-    private View mNoTasksView;
+    private View mNoSearchItemView;
     private RecyclerView mListView;
     private SearchContract.Presenter mPresenter;
     SearchItemListener mItemListener = new SearchItemListener() {
         @Override
-        public void onTaskClick(SearchedList.QueryBean.PagesBean clickedTask) {
-            mPresenter.openTaskDetails(clickedTask);
+        public void onSearchedItemClick(SearchedList.QueryBean.PagesBean pagesBean) {
+            mPresenter.openSearchDetails(pagesBean);
         }
 
     };
@@ -69,7 +69,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mNoTasksView = getView().findViewById(R.id.noTasks);
+        mNoSearchItemView = getView().findViewById(R.id.noSearchItem);
         mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
         mListView = (RecyclerView) getView().findViewById(R.id.rvItem);
         mListView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -85,7 +85,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         }
         if (active) {
             mProgressBar.setVisibility(View.VISIBLE);
-            mNoTasksView.setVisibility(View.INVISIBLE);
+            mNoSearchItemView.setVisibility(View.INVISIBLE);
 
         } else {
             mProgressBar.setVisibility(View.INVISIBLE);
@@ -114,36 +114,32 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
                     searchRequest.setAction("query");
                     searchRequest.setSearchterm(newText);
                     searchRequest.setRequestType("json");
-                    mPresenter.loadTasks(false, searchRequest);
+                    mPresenter.loadTasks(searchRequest);
+                } else {
+                    mListView.setVisibility(View.GONE);
+                    mNoSearchItemView.setVisibility(View.VISIBLE);
                 }
-                return false;
-            }
-        });
-        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                mListView.setVisibility(View.GONE);
-                mNoTasksView.setVisibility(View.VISIBLE);
                 return false;
             }
         });
     }
 
     @Override
-    public void showTasks(SearchedList tasks) {
-        if (tasks.getQuery() != null) {
-            mListAdapter.replaceData(tasks.getQuery().getPages());
+    public void showSearchedList(SearchedList searchedList) {
+        if (searchedList.getQuery() != null) {
+            mListAdapter.replaceData(searchedList.getQuery().getPages());
             mListView.setVisibility(View.VISIBLE);
-            mNoTasksView.setVisibility(View.GONE);
+            mNoSearchItemView.setVisibility(View.GONE);
         } else {
             mListView.setVisibility(View.GONE);
-            mNoTasksView.setVisibility(View.VISIBLE);
+            mNoSearchItemView.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void showDialog(String s) {
-        showDialog(s);
+        setLoadingIndicator(false);
+        showAlertDialog(s);
     }
 
     @Override
@@ -154,7 +150,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
                         getActivity(), requestedTask.getPair());
 
-        Intent intent = new Intent(getContext(), TaskDetailActivity.class);
+        Intent intent = new Intent(getContext(), SearchDetailActivity.class);
         intent.putExtra(EXTRA_TASK_ID, requestedTask);
         ActivityCompat.startActivity(getActivity(), intent, transitionActivityOptions.toBundle());
     }

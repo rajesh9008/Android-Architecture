@@ -3,6 +3,8 @@ package moneytap.com.task.view.searchdetails;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,16 +18,16 @@ import moneytap.com.task.view.BaseFragment;
 /**
  * Main UI for the searched detail screen.
  */
-public class TaskDetailFragment extends BaseFragment implements TaskDetailContract.View {
+public class SearchDetailFragment extends BaseFragment implements SearchDetailContract.View {
 
     private static final String ARGUMENT_TASK_ID = "TASK_ID";
-    private TaskDetailContract.Presenter mPresenter;
+    private SearchDetailContract.Presenter mPresenter;
     private SearchedList.QueryBean.PagesBean mPagesBean;
 
-    public static TaskDetailFragment newInstance(@Nullable SearchedList.QueryBean.PagesBean taskId) {
+    public static SearchDetailFragment newInstance(@Nullable SearchedList.QueryBean.PagesBean taskId) {
         Bundle arguments = new Bundle();
         arguments.putParcelable(ARGUMENT_TASK_ID, taskId);
-        TaskDetailFragment fragment = new TaskDetailFragment();
+        SearchDetailFragment fragment = new SearchDetailFragment();
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -43,11 +45,14 @@ public class TaskDetailFragment extends BaseFragment implements TaskDetailContra
             ImageView imageView = getView().findViewById(R.id.imageView);
             TextView title = getView().findViewById(R.id.textViewTitle);
             TextView desc = getView().findViewById(R.id.textViewDesc);
-            if (mPagesBean.getThumbnail() != null && mPagesBean.getThumbnail().getSource() != null && mPagesBean.getThumbnail().getSource().length() > 0)
+            if (mPagesBean.getThumbnail() != null && !TextUtils.isEmpty(mPagesBean.getThumbnail().getSource()))
                 Picasso.get().load(mPagesBean.getThumbnail().getSource()).placeholder(R.mipmap.ic_launcher).into(imageView);
 
-            if (mPagesBean.getTitle() != null)
+            if (!TextUtils.isEmpty(mPagesBean.getTitle() )) {
                 title.setText(mPagesBean.getTitle());
+                if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mPagesBean.getTitle());
+            }
             StringBuilder stringBuilder = new StringBuilder();
             if (mPagesBean.getTerms() != null && mPagesBean.getTerms().getDescription() != null)
                 for (String s : mPagesBean.getTerms().getDescription()) {
@@ -64,7 +69,7 @@ public class TaskDetailFragment extends BaseFragment implements TaskDetailContra
     }
 
     @Override
-    public void setPresenter(@NonNull TaskDetailContract.Presenter presenter) {
+    public void setPresenter(@NonNull SearchDetailContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
@@ -77,5 +82,10 @@ public class TaskDetailFragment extends BaseFragment implements TaskDetailContra
     @Override
     public void setLoadingIndicator(boolean active) {
 
+    }
+
+    @Override
+    public void showDialog(String s) {
+        showAlertDialog(s);
     }
 }

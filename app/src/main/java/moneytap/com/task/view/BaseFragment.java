@@ -23,13 +23,7 @@ import moneytap.com.task.utils.Constants;
 public abstract class BaseFragment extends Fragment {
 
     private static final String TAG = BaseFragment.class.getSimpleName();
-
-
     protected View rootView;
-    private ProgressDialog mProgressDialog;
-    private AlertDialog.Builder mAlertDialogBuilder;
-    private AlertDialog mAlertDialog;
-    private View layout;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Nullable
@@ -45,34 +39,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract int getLayoutResId();
 
-    public void showProgressDialog(boolean isCancelAble) {
-        try {
-            if (mProgressDialog == null) {
-                mProgressDialog = ProgressDialog.show(getActivity(), null, null);
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                mProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                mProgressDialog.setCancelable(isCancelAble);
-            }
-            if (!mProgressDialog.isShowing()) {
-                mProgressDialog.setCancelable(isCancelAble);
-                mProgressDialog.show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void hideDialog() {
-        try {
-            if (mProgressDialog != null && mProgressDialog.isShowing()) {
-                mProgressDialog.dismiss();
-            }
-        } catch (Exception e) {
-            Log.i(TAG, "hideDialog: " + e.getMessage());
-        }
-
-    }
-
 
     @Override
     public void onResume() {
@@ -80,7 +46,7 @@ public abstract class BaseFragment extends Fragment {
         getPresenter().start();
     }
 
-    public void showDialog(String msg) {
+    public void showAlertDialog(String msg) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.AppAlertDialogTheme);
         alertDialogBuilder.setTitle(Constants.ALERT_TITLE).setMessage(msg).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

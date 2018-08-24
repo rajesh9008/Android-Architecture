@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.searchdetails.TaskDetailActivity"
+        <activity android:name=".view.searchdetails.SearchDetailActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

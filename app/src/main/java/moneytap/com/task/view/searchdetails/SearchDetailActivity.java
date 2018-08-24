@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import moneytap.com.task.R;
 import moneytap.com.task.model.SearchedList;
-import moneytap.com.task.net.TasksRepository;
+import moneytap.com.task.net.SearchRepository;
 import moneytap.com.task.utils.ActivityUtils;
 
 import static moneytap.com.task.utils.Constants.EXTRA_TASK_ID;
@@ -15,7 +15,7 @@ import static moneytap.com.task.utils.Constants.EXTRA_TASK_ID;
 /**
  * Displays searched details screen.
  */
-public class TaskDetailActivity extends AppCompatActivity {
+public class SearchDetailActivity extends AppCompatActivity {
 
 
     @Override
@@ -29,23 +29,22 @@ public class TaskDetailActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
 
-        // Get the requested task id
-        SearchedList.QueryBean.PagesBean taskId = getIntent().getParcelableExtra(EXTRA_TASK_ID);
+        SearchedList.QueryBean.PagesBean pagesBean = getIntent().getParcelableExtra(EXTRA_TASK_ID);
 
-        TaskDetailFragment taskDetailFragment = (TaskDetailFragment) getSupportFragmentManager()
+        SearchDetailFragment searchDetailFragment = (SearchDetailFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
 
-        if (taskDetailFragment == null) {
-            taskDetailFragment = TaskDetailFragment.newInstance(taskId);
+        if (searchDetailFragment == null) {
+            searchDetailFragment = SearchDetailFragment.newInstance(pagesBean);
 
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                    taskDetailFragment, R.id.contentFrame);
+                    searchDetailFragment, R.id.contentFrame);
         }
 
         // Create the presenter
-        new TaskDetailPresenter(
-                TasksRepository.getInstance(),
-                taskDetailFragment);
+        new SearchDetailPresenter(
+                SearchRepository.getInstance(),
+                searchDetailFragment);
     }
 
     @Override

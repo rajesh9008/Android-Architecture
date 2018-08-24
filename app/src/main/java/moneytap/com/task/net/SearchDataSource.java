@@ -5,12 +5,12 @@ import android.support.annotation.NonNull;
 import moneytap.com.task.model.SearchRequest;
 import moneytap.com.task.model.SearchedList;
 
-public interface TasksDataSource {
+public interface SearchDataSource {
 
-    void getTasks(@NonNull LoadTasksCallback callback, SearchRequest searchRequest);
+    void getSearchItems(@NonNull LoadSearchedCallback callback, SearchRequest searchRequest);
 
 
-    interface LoadTasksCallback {
+    interface LoadSearchedCallback {
 
         void onTasksLoaded(SearchedList tasks);
 
