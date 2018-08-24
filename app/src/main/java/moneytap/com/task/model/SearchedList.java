@@ -129,6 +129,17 @@ public class SearchedList {
         }
 
         public static class PagesBean implements Parcelable {
+            public static final Parcelable.Creator<PagesBean> CREATOR = new Parcelable.Creator<PagesBean>() {
+                @Override
+                public PagesBean createFromParcel(Parcel source) {
+                    return new PagesBean(source);
+                }
+
+                @Override
+                public PagesBean[] newArray(int size) {
+                    return new PagesBean[size];
+                }
+            };
             /**
              * pageid : 57570
              * ns : 0
@@ -145,6 +156,18 @@ public class SearchedList {
             private ThumbnailBean thumbnail;
             private TermsBean terms;
             private transient Pair mPair;
+
+            public PagesBean() {
+            }
+
+            protected PagesBean(Parcel in) {
+                this.pageid = in.readInt();
+                this.ns = in.readInt();
+                this.title = in.readString();
+                this.index = in.readInt();
+                this.thumbnail = in.readParcelable(ThumbnailBean.class.getClassLoader());
+                this.terms = in.readParcelable(TermsBean.class.getClassLoader());
+            }
 
             public Pair getPair() {
                 return mPair;
@@ -202,7 +225,33 @@ public class SearchedList {
                 this.terms = terms;
             }
 
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(this.pageid);
+                dest.writeInt(this.ns);
+                dest.writeString(this.title);
+                dest.writeInt(this.index);
+                dest.writeParcelable(this.thumbnail, flags);
+                dest.writeParcelable(this.terms, flags);
+            }
+
             public static class ThumbnailBean implements Parcelable {
+                public static final Creator<ThumbnailBean> CREATOR = new Creator<ThumbnailBean>() {
+                    @Override
+                    public ThumbnailBean createFromParcel(Parcel source) {
+                        return new ThumbnailBean(source);
+                    }
+
+                    @Override
+                    public ThumbnailBean[] newArray(int size) {
+                        return new ThumbnailBean[size];
+                    }
+                };
                 /**
                  * source : https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Sachin_Tendulkar_at_MRF_Promotion_Event.jpg/50px-Sachin_Tendulkar_at_MRF_Promotion_Event.jpg
                  * width : 50
@@ -212,6 +261,15 @@ public class SearchedList {
                 private String source;
                 private int width;
                 private int height;
+
+                public ThumbnailBean() {
+                }
+
+                protected ThumbnailBean(Parcel in) {
+                    this.source = in.readString();
+                    this.width = in.readInt();
+                    this.height = in.readInt();
+                }
 
                 public String getSource() {
                     return source;
@@ -248,31 +306,28 @@ public class SearchedList {
                     dest.writeInt(this.width);
                     dest.writeInt(this.height);
                 }
-
-                public ThumbnailBean() {
-                }
-
-                protected ThumbnailBean(Parcel in) {
-                    this.source = in.readString();
-                    this.width = in.readInt();
-                    this.height = in.readInt();
-                }
-
-                public static final Creator<ThumbnailBean> CREATOR = new Creator<ThumbnailBean>() {
-                    @Override
-                    public ThumbnailBean createFromParcel(Parcel source) {
-                        return new ThumbnailBean(source);
-                    }
-
-                    @Override
-                    public ThumbnailBean[] newArray(int size) {
-                        return new ThumbnailBean[size];
-                    }
-                };
             }
 
             public static class TermsBean implements Parcelable {
+                public static final Creator<TermsBean> CREATOR = new Creator<TermsBean>() {
+                    @Override
+                    public TermsBean createFromParcel(Parcel source) {
+                        return new TermsBean(source);
+                    }
+
+                    @Override
+                    public TermsBean[] newArray(int size) {
+                        return new TermsBean[size];
+                    }
+                };
                 private List<String> description;
+
+                public TermsBean() {
+                }
+
+                protected TermsBean(Parcel in) {
+                    this.description = in.createStringArrayList();
+                }
 
                 public List<String> getDescription() {
                     return description;
@@ -291,65 +346,7 @@ public class SearchedList {
                 public void writeToParcel(Parcel dest, int flags) {
                     dest.writeStringList(this.description);
                 }
-
-                public TermsBean() {
-                }
-
-                protected TermsBean(Parcel in) {
-                    this.description = in.createStringArrayList();
-                }
-
-                public static final Creator<TermsBean> CREATOR = new Creator<TermsBean>() {
-                    @Override
-                    public TermsBean createFromParcel(Parcel source) {
-                        return new TermsBean(source);
-                    }
-
-                    @Override
-                    public TermsBean[] newArray(int size) {
-                        return new TermsBean[size];
-                    }
-                };
             }
-
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel dest, int flags) {
-                dest.writeInt(this.pageid);
-                dest.writeInt(this.ns);
-                dest.writeString(this.title);
-                dest.writeInt(this.index);
-                dest.writeParcelable(this.thumbnail, flags);
-                dest.writeParcelable(this.terms, flags);
-            }
-
-            public PagesBean() {
-            }
-
-            protected PagesBean(Parcel in) {
-                this.pageid = in.readInt();
-                this.ns = in.readInt();
-                this.title = in.readString();
-                this.index = in.readInt();
-                this.thumbnail = in.readParcelable(ThumbnailBean.class.getClassLoader());
-                this.terms = in.readParcelable(TermsBean.class.getClassLoader());
-            }
-
-            public static final Parcelable.Creator<PagesBean> CREATOR = new Parcelable.Creator<PagesBean>() {
-                @Override
-                public PagesBean createFromParcel(Parcel source) {
-                    return new PagesBean(source);
-                }
-
-                @Override
-                public PagesBean[] newArray(int size) {
-                    return new PagesBean[size];
-                }
-            };
         }
     }
 }

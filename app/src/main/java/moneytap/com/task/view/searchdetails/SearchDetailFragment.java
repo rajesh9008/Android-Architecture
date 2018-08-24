@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import moneytap.com.task.R;
 import moneytap.com.task.model.SearchedList;
 import moneytap.com.task.presenter.BasePresenter;
@@ -35,23 +37,23 @@ public class SearchDetailFragment extends BaseFragment implements SearchDetailCo
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPagesBean = getArguments().getParcelable(ARGUMENT_TASK_ID);
+        mPagesBean = Objects.requireNonNull(getArguments()).getParcelable(ARGUMENT_TASK_ID);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (mPagesBean != null) {
-            ImageView imageView = getView().findViewById(R.id.imageView);
+            ImageView imageView = Objects.requireNonNull(getView()).findViewById(R.id.imageView);
             TextView title = getView().findViewById(R.id.textViewTitle);
             TextView desc = getView().findViewById(R.id.textViewDesc);
             if (mPagesBean.getThumbnail() != null && !TextUtils.isEmpty(mPagesBean.getThumbnail().getSource()))
                 Picasso.get().load(mPagesBean.getThumbnail().getSource()).placeholder(R.mipmap.ic_launcher).into(imageView);
 
-            if (!TextUtils.isEmpty(mPagesBean.getTitle() )) {
+            if (!TextUtils.isEmpty(mPagesBean.getTitle())) {
                 title.setText(mPagesBean.getTitle());
-                if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mPagesBean.getTitle());
+                if (((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar() != null)
+                    Objects.requireNonNull(((AppCompatActivity) getActivity()).getSupportActionBar()).setTitle(mPagesBean.getTitle());
             }
             StringBuilder stringBuilder = new StringBuilder();
             if (mPagesBean.getTerms() != null && mPagesBean.getTerms().getDescription() != null)

@@ -16,7 +16,7 @@ import static moneytap.com.task.net.RestClient.getAPIInterface;
 public class SearchRepository implements SearchDataSource {
 
     private static SearchRepository INSTANCE = null;
-    Map<String, SearchedList> mCachedSearchedItems = new LinkedHashMap<>();
+    private Map<String, SearchedList> mCachedSearchedItems = new LinkedHashMap<>();
 
     private SearchRepository() {
     }
@@ -44,13 +44,13 @@ public class SearchRepository implements SearchDataSource {
         getAPIInterface().getResults(searchRequest.getAction(), searchRequest.getRequestType(),
                 searchRequest.getSearchterm()).enqueue(new Callback<SearchedList>() {
             @Override
-            public void onResponse(Call<SearchedList> call, Response<SearchedList> response) {
-                mCachedSearchedItems.put(searchRequest.getSearchterm(), (SearchedList) response.body());
-                callback.onTasksLoaded((SearchedList) response.body());
+            public void onResponse(@NonNull Call<SearchedList> call, @NonNull Response<SearchedList> response) {
+                mCachedSearchedItems.put(searchRequest.getSearchterm(), response.body());
+                callback.onTasksLoaded(response.body());
             }
 
             @Override
-            public void onFailure(Call<SearchedList> call, Throwable t) {
+            public void onFailure(@NonNull Call<SearchedList> call, @NonNull Throwable t) {
                 callback.onDataNotAvailable();
             }
         });

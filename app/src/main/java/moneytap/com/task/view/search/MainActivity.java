@@ -9,14 +9,10 @@ import moneytap.com.task.utils.ActivityUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SearchPresenter mSearchPresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         SearchFragment tasksFragment =
                 (SearchFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
@@ -28,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Create the presenter
-        mSearchPresenter = new SearchPresenter(
+        SearchPresenter mSearchPresenter = new SearchPresenter(
                 SearchRepository.getInstance(), tasksFragment);
     }
 }

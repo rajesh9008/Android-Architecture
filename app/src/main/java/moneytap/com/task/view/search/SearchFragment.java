@@ -15,13 +15,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import moneytap.com.task.R;
-import moneytap.com.task.view.adapter.SearchAdapter;
 import moneytap.com.task.model.SearchRequest;
 import moneytap.com.task.model.SearchedList;
 import moneytap.com.task.presenter.BasePresenter;
 import moneytap.com.task.view.BaseFragment;
+import moneytap.com.task.view.adapter.SearchAdapter;
 import moneytap.com.task.view.searchdetails.SearchDetailActivity;
 
 import static moneytap.com.task.utils.Constants.EXTRA_TASK_ID;
@@ -31,7 +32,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     private View mNoSearchItemView;
     private RecyclerView mListView;
     private SearchContract.Presenter mPresenter;
-    SearchItemListener mItemListener = new SearchItemListener() {
+    private final SearchItemListener mItemListener = new SearchItemListener() {
         @Override
         public void onSearchedItemClick(SearchedList.QueryBean.PagesBean pagesBean) {
             mPresenter.openSearchDetails(pagesBean);
@@ -69,9 +70,9 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mNoSearchItemView = getView().findViewById(R.id.noSearchItem);
-        mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
-        mListView = (RecyclerView) getView().findViewById(R.id.rvItem);
+        mNoSearchItemView = Objects.requireNonNull(getView()).findViewById(R.id.noSearchItem);
+        mProgressBar = getView().findViewById(R.id.progressBar);
+        mListView = getView().findViewById(R.id.rvItem);
         mListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mListView.setHasFixedSize(true);
         mListView.setAdapter(mListAdapter);
@@ -148,7 +149,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
         ActivityOptionsCompat transitionActivityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        getActivity(), requestedTask.getPair());
+                        Objects.requireNonNull(getActivity()), requestedTask.getPair());
 
         Intent intent = new Intent(getContext(), SearchDetailActivity.class);
         intent.putExtra(EXTRA_TASK_ID, requestedTask);

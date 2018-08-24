@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.Objects;
+
 import moneytap.com.task.R;
 import moneytap.com.task.model.SearchedList;
 import moneytap.com.task.net.SearchRepository;
@@ -26,7 +28,7 @@ public class SearchDetailActivity extends AppCompatActivity {
 
         // Set up the toolbar.
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(ab).setDisplayHomeAsUpEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
 
         SearchedList.QueryBean.PagesBean pagesBean = getIntent().getParcelableExtra(EXTRA_TASK_ID);

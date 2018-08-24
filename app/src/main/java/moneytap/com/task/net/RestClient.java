@@ -19,7 +19,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class RestClient {
+class RestClient {
 
     private final static int cacheSize = 1024; // 1MB
     private static Retrofit retrofit;

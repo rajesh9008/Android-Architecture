@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:layout_margin="@dimen/cardview_default_radius"
+    android:background="@android:color/white"
     android:elevation="@dimen/cardview_default_elevation">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginStart="8dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="8dp"
-        android:transitionName="@string/transition_view"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/ic_launcher"
+        android:transitionName="@string/transition_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,26 +26,26 @@
         android:id="@+id/textViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:textStyle="bold"
-        android:text="TextView"
         android:textColor="@android:color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/textViewDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        tools:text="TextView" />
 </android.support.constraint.ConstraintLayout>

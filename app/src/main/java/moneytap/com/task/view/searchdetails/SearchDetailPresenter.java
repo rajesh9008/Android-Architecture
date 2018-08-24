@@ -12,11 +12,9 @@ import moneytap.com.task.net.SearchRepository;
 public class SearchDetailPresenter implements SearchDetailContract.Presenter {
 
 
-    private final SearchDetailContract.View mSearchDetailView;
-
     public SearchDetailPresenter(@NonNull SearchRepository searchRepository,
                                  @NonNull SearchDetailContract.View detailView) {
-        mSearchDetailView = detailView;
+        SearchDetailContract.View mSearchDetailView = detailView;
         mSearchDetailView.setPresenter(this);
     }
 

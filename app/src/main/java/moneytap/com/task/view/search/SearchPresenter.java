@@ -13,7 +13,6 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     private final SearchRepository mSearchRepository;
     private final SearchContract.View mSearchView;
-    private boolean mFirstLoad = true;
 
     public SearchPresenter(@NonNull SearchRepository searchRepository, @NonNull SearchContract.View searchView) {
         mSearchRepository = searchRepository;

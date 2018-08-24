@@ -1,16 +1,13 @@
 package moneytap.com.task.view;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +20,12 @@ import moneytap.com.task.utils.Constants;
 public abstract class BaseFragment extends Fragment {
 
     private static final String TAG = BaseFragment.class.getSimpleName();
-    protected View rootView;
+    private View rootView;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(getLayoutResId(), container, false);
         return rootView;
@@ -46,7 +43,7 @@ public abstract class BaseFragment extends Fragment {
         getPresenter().start();
     }
 
-    public void showAlertDialog(String msg) {
+    protected void showAlertDialog(String msg) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity(), R.style.AppAlertDialogTheme);
         alertDialogBuilder.setTitle(Constants.ALERT_TITLE).setMessage(msg).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -60,10 +57,7 @@ public abstract class BaseFragment extends Fragment {
 
 
     public boolean isAlertDialogShowing(AlertDialog thisAlertDialog) {
-        if (thisAlertDialog != null) {
-            return thisAlertDialog.isShowing();
-        }
-        return false;
+        return thisAlertDialog != null && thisAlertDialog.isShowing();
     }
 
 
