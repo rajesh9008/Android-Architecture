@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Task</string>
+    <string name="app_name">Search Demo</string>
     <string name="no_tasks_all">No items please search </string>
     <string name="loading">loading</string>
     <string name="transition_view">transition_view</string>

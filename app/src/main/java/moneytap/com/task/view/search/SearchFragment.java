@@ -85,10 +85,10 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         }
         if (active) {
             mProgressBar.setVisibility(View.VISIBLE);
-            mNoTasksView.setVisibility(View.GONE);
+            mNoTasksView.setVisibility(View.INVISIBLE);
 
         } else {
-            mProgressBar.setVisibility(View.GONE);
+            mProgressBar.setVisibility(View.INVISIBLE);
             mListView.setVisibility(View.VISIBLE);
         }
     }
@@ -116,6 +116,14 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
                     searchRequest.setRequestType("json");
                     mPresenter.loadTasks(false, searchRequest);
                 }
+                return false;
+            }
+        });
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                mListView.setVisibility(View.GONE);
+                mNoTasksView.setVisibility(View.VISIBLE);
                 return false;
             }
         });
