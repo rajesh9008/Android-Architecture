@@ -3,16 +3,22 @@ package moneytap.com.task.view.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
 import moneytap.com.task.R;
 import moneytap.com.task.adapter.SearchAdapter;
+import moneytap.com.task.model.SearchRequest;
 import moneytap.com.task.model.SearchedList;
 import moneytap.com.task.presenter.BasePresenter;
 import moneytap.com.task.view.BaseFragment;
@@ -32,6 +38,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         }
 
     };
+    private ProgressBar mProgressBar;
     private SearchAdapter mListAdapter;
 
     public static SearchFragment newInstance() {
@@ -41,7 +48,7 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new SearchAdapter(getActivity(), new ArrayList<SearchedList.QueryBean.PagesBean>(0), mItemListener);
+        mListAdapter = new SearchAdapter(new ArrayList<SearchedList.QueryBean.PagesBean>(0), mItemListener);
     }
 
     @Override
@@ -62,30 +69,13 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         mNoTasksView = getView().findViewById(R.id.noTasks);
+        mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
         mListView = (RecyclerView) getView().findViewById(R.id.rvItem);
         mListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mListView.setHasFixedSize(true);
         mListView.setAdapter(mListAdapter);
-
-        // Set up progress indicator
-        final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
-                (ScrollChildSwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
-        swipeRefreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-                ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
-        );
-
-        // Set the scrolling view in the custom SwipeRefreshLayout.
-        swipeRefreshLayout.setScrollUpChild(mListView);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mPresenter.loadTasks(false);
-            }
-        });
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -93,23 +83,54 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
         if (getView() == null) {
             return;
         }
-        final SwipeRefreshLayout srl =
-                (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
+        if (active) {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mNoTasksView.setVisibility(View.GONE);
 
-        // Make sure setRefreshing() is called after the layout is done with everything else.
-        srl.post(new Runnable() {
+        } else {
+            mProgressBar.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_menu, menu);
+        MenuItem mSearch = menu.findItem(R.id.action_search);
+        SearchView mSearchView = (SearchView) mSearch.getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void run() {
-                srl.setRefreshing(active);
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() > 0) {
+                    SearchRequest searchRequest = new SearchRequest();
+                    searchRequest.setAction("query");
+                    searchRequest.setSearchterm(newText);
+                    searchRequest.setRequestType("json");
+                    mPresenter.loadTasks(false, searchRequest);
+                }
+                return false;
             }
         });
     }
 
     @Override
     public void showTasks(SearchedList tasks) {
-        mListAdapter.replaceData(tasks.getQuery().getPages());
-        mListView.setVisibility(View.VISIBLE);
-        mNoTasksView.setVisibility(View.GONE);
+        if (tasks.getQuery() != null) {
+            mListAdapter.replaceData(tasks.getQuery().getPages());
+            mListView.setVisibility(View.VISIBLE);
+            mNoTasksView.setVisibility(View.GONE);
+        } else {
+            mListView.setVisibility(View.GONE);
+            mNoTasksView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -119,8 +140,14 @@ public class SearchFragment extends BaseFragment implements SearchContract.View 
 
     @Override
     public void showSearchedDetailsUi(SearchedList.QueryBean.PagesBean requestedTask) {
+
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        getActivity(), requestedTask.getPair());
+
         Intent intent = new Intent(getContext(), TaskDetailActivity.class);
         intent.putExtra(EXTRA_TASK_ID, requestedTask);
-        startActivity(intent);
+        ActivityCompat.startActivity(getActivity(), intent, transitionActivityOptions.toBundle());
     }
 }

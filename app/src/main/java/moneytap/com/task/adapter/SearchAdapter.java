@@ -1,6 +1,7 @@
 package moneytap.com.task.adapter;
 
-import android.content.Context;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,25 +20,24 @@ import moneytap.com.task.view.search.SearchItemListener;
 
 public class SearchAdapter extends RecyclerView.Adapter {
     List<SearchedList.QueryBean.PagesBean> userList;
-    private Context mContext;
     private SearchItemListener mItemListener;
 
-    public SearchAdapter(Context mContext, ArrayList<SearchedList.QueryBean.PagesBean> userList, SearchItemListener itemListener) {
-        this.mContext = mContext;
+    public SearchAdapter(ArrayList<SearchedList.QueryBean.PagesBean> userList, SearchItemListener itemListener) {
         this.userList = userList;
         this.mItemListener = itemListener;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_search, null);
-        UserViewHolder viewHolder = new UserViewHolder(view);
+        View itemView = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.item_search, viewGroup, false);
+        UserViewHolder viewHolder = new UserViewHolder(itemView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
-        UserViewHolder holder = (UserViewHolder) viewHolder;
+        final UserViewHolder holder = (UserViewHolder) viewHolder;
         final SearchedList.QueryBean.PagesBean pagesBean = userList.get(i);
         if (userList.get(i).getThumbnail() != null && pagesBean.getThumbnail().getSource() != null && userList.get(i).getThumbnail().getSource().length() > 0)
             Picasso.get().load(userList.get(i).getThumbnail().getSource()).into(holder.ivThumbnail);
@@ -54,6 +54,8 @@ public class SearchAdapter extends RecyclerView.Adapter {
         holder.ivThumbnail.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Pair participants = new Pair<>(holder.ivThumbnail, ViewCompat.getTransitionName(holder.ivThumbnail));
+                pagesBean.setPair(participants);
                 mItemListener.onTaskClick(pagesBean);
             }
         });

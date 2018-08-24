@@ -3,6 +3,7 @@ package moneytap.com.task.view.search;
 
 import android.support.annotation.NonNull;
 
+import moneytap.com.task.model.SearchRequest;
 import moneytap.com.task.model.SearchedList;
 import moneytap.com.task.presenter.BasePresenter;
 import moneytap.com.task.view.BaseView;
@@ -22,7 +23,7 @@ public interface SearchContract {
 
     interface Presenter extends BasePresenter {
 
-        void loadTasks(boolean forceUpdate);
+        void loadTasks(boolean forceUpdate, SearchRequest SearchRequest);
 
         void openTaskDetails(@NonNull SearchedList.QueryBean.PagesBean requestedTask);
 

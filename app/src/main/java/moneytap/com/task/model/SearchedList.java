@@ -2,6 +2,7 @@ package moneytap.com.task.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.util.Pair;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -143,6 +144,15 @@ public class SearchedList {
             private int index;
             private ThumbnailBean thumbnail;
             private TermsBean terms;
+            private transient Pair mPair;
+
+            public Pair getPair() {
+                return mPair;
+            }
+
+            public void setPair(Pair pair) {
+                mPair = pair;
+            }
 
             public int getPageid() {
                 return pageid;

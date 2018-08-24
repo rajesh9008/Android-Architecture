@@ -7,9 +7,13 @@ public class ApplicationDemo extends Application {
     private static ApplicationDemo mApplicationDemo;
 
     public static ApplicationDemo getAppContext() {
-        if(mApplicationDemo!=null){
-            mApplicationDemo = new ApplicationDemo();
-        }
         return mApplicationDemo;
+    }
+
+    @Override
+    public void onCreate() {
+        mApplicationDemo = this;
+        super.onCreate();
+
     }
 }

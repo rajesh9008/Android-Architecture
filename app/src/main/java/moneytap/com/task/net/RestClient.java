@@ -5,10 +5,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ihsanbal.logging.Level;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import moneytap.com.task.ApplicationDemo;
 import moneytap.com.task.BuildConfig;
 import moneytap.com.task.utils.Constants;
+import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.internal.platform.Platform;
@@ -25,7 +28,7 @@ public class RestClient {
         return getRestClient().create(RestInterface.class);
     }
 
-    public static Retrofit getRestClient() {
+    private static Retrofit getRestClient() {
         if (retrofit == null) {
             Gson gson = new GsonBuilder()
                     .setLenient()
@@ -40,19 +43,22 @@ public class RestClient {
     }
 
 
-    public static OkHttpClient getClient() {
+    private static OkHttpClient getClient() {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
- /*       File httpCacheDirectory = new File(ApplicationDemo.getAppContext().getCacheDir(), "responses");
+        //Http Cache
+        File httpCacheDirectory = new File(ApplicationDemo.getAppContext().getCacheDir(), "responses");
         Cache cache = new Cache(httpCacheDirectory, cacheSize);
-        builder.cache(cache);*/
+        builder.cache(cache);
 
         builder.readTimeout(1, TimeUnit.MINUTES)
                 .writeTimeout(1, TimeUnit.MINUTES)
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .connectionPool(new ConnectionPool(100, 5, TimeUnit.MINUTES))
                 .retryOnConnectionFailure(true);
+
+        //Debugging Interceptor
         builder.addInterceptor(new com.ihsanbal.logging.LoggingInterceptor.Builder()
                 .loggable(BuildConfig.DEBUG)
                 .setLevel(Level.BASIC)

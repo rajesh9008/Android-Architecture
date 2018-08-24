@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<moneytap.com.task.view.search.ScrollChildSwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh_layout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/tasksContainer"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvItem"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
+        android:layout_height="wrap_content"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_search">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/noTasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-
-
-        <LinearLayout
-            android:id="@+id/noTasks"
+        <TextView
+            android:id="@+id/noTasksMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:text="@string/no_tasks_all" />
 
 
-            <TextView
-                android:id="@+id/noTasksMain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/no_tasks_all" />
+    </LinearLayout>
 
-
-        </LinearLayout>
-    </RelativeLayout>
-</moneytap.com.task.view.search.ScrollChildSwipeRefreshLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+</RelativeLayout>
