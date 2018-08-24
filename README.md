@@ -3,6 +3,7 @@
 App built with Model-View-Presenter (MVP) architecture without using any architectural frameworks.
 
 Library used
+
 Retrofit : https://square.github.io/retrofit/
 Picasso  : http://square.github.io/picasso/
 
